@@ -13,9 +13,9 @@ const makeSelectError = () => createSelector(
   (globalState) => globalState.error
 );
 
-const makeSelectQuestions = () => createSelector(
+const makeSelectExam = () => createSelector(
   selectGlobal,
-  (globalState) => globalState.questions
+  (globalState) => globalState.exam
 );
 
 
@@ -23,5 +23,5 @@ export {
   selectGlobal,
   makeSelectLoading,
   makeSelectError,
-  makeSelectQuestions,
+  makeSelectExam,
 };

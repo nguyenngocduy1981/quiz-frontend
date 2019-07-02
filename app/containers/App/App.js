@@ -1,41 +1,31 @@
-/**
- *
- * App
- *
- * This component is the skeleton around the actual pages, and should only
- * contain code that should be seen on all pages. (e.g. navigation bar)
- */
-
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
 import ExamPage from 'containers/ExamPage/Loadable';
-import AdminPage from 'containers/AdminPage/Loadable';
 import GoiyPage from 'containers/GoiyPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
-import Header from 'components/Header';
-import Footer from 'components/Footer';
+
 import './style.scss';
 
 const App = () => (
   <div className="app-wrapper">
     <Helmet
-      titleTemplate="%s - React.js Boilerplate"
-      defaultTitle="React.js Boilerplate"
+      titleTemplate="%s"
+      defaultTitle="Exam App"
     >
-      <meta name="description" content="A React.js Boilerplate application" />
+      <meta name="description" content="Exam App" />
     </Helmet>
-    <Header />
+    <div id={'top'}>
     <Switch>
       <Route exact path="/" component={HomePage} />
-      <Route exact path="/exam" component={ExamPage} />
-      <Route exact path="/admin" component={AdminPage} />
+      <Route exact path="/exam/:name" component={ExamPage} />
       <Route path="/goiy" component={GoiyPage} />
       <Route path="" component={NotFoundPage} />
     </Switch>
-    <Footer />
+    </div>
+    <a id={'go_top'} href={'#top'}>Go top</a>
   </div>
 );
 

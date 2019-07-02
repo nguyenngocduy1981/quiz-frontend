@@ -1,32 +1,66 @@
 .exam-page {
+  .summary {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+
+    .btn {
+      border: 2px solid #41ADDD;
+      color: #41ADDD;
+      padding: 2px 5px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-left: 5px;
+      margin-right: 5px;
+
+      &:active {
+        background: #41ADDD;
+        color: #FFF;
+      }
+    }
+  }
 
   h2 {
     font-size: 1.5em;
   }
 
-  //section {
-  //  margin: 3em auto;
-  //
-  //  &:first-child {
-  //    margin-top: 0;
-  //  }
-  //
-  //  &.centered {
-  //    text-align: center;
-  //  }
-  //}
-  //
-  //form {
-  //  margin-bottom: 1em;
-  //
-  //  input {
-  //    outline: none;
-  //    border-bottom: 1px dotted #999;
-  //  }
-  //}
-  //
-  //span.at-prefix {
-  //  color: black;
-  //  margin-left: 0.4em;
-  //}
+  .section {
+    margin-bottom: 5px;
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      background: #41ADDD;
+      color: #FFE67C;
+
+      h3 {
+        margin: 0;
+        padding-left: 5px;
+      }
+
+      h3:last-child {
+        border-left: 1px solid white;
+        border-right: 1px solid white;
+        margin-right: 5px;
+        padding-left: 5px;
+        padding-right: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .section_options {
+  }
+
+  .options {
+    text-align: center;
+    padding-top: 5px;
+
+    span {
+      margin-left: 10px;
+      border: 1px solid #41ADDD;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
 }

@@ -1,53 +1,25 @@
 .app-wrapper {
   margin: 0 auto;
   min-height: 100%;
-  padding: 0 16px;
+  padding: 10px 16px;
 
-  //background-color: #fff;
-  //background-image: url('texture.jpg');
-  //background-repeat: repeat;
-  //background-position: 0 0;
+  .text-control {
+    width: 90%;
+    padding: 5px 0;
+    margin: 5px 0;
+  }
 
-  /* Cach I */
-  //font: normal 12px/1.5 "Lucida Grande", arial, sans-serif;
-  ////padding: 6px 5px 4px 42px;
-  //position: relative;
-  //color: #444;
-  //line-height: 20px;
-  //border: 1px solid #d2d2d2;
-  //background: #fff;
-  //background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
-  //background: -webkit-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;
-  //background: -moz-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;
-  //background: -ms-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;
-  //background: -o-linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;
-  //background: linear-gradient(top, #d9eaf3 0%, #fff 8%) 0 4px;
-  //-webkit-background-size: 100% 20px;
-  //-moz-background-size: 100% 20px;
-  //-ms-background-size: 100% 20px;
-  //-o-background-size: 100% 20px;
-  //background-size: 100% 20px;
-  //-webkit-border-radius: 3px;
-  //-moz-border-radius: 3px;
-  //border-radius: 3px;
-  //-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);
-  //-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);
-  //box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);
+  #go_top {
+    width: 38px;
+    height: 38px;
+    line-height: 37px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.2);
+    position: fixed;
+    bottom: 19px;
+    right: 19px;
+    z-index: 9999;
+    border: 4px double #fff;
+  }
 
-  /* Cach II */
-  //background-image: -webkit-linear-gradient(0deg, transparent 5em, #d9eaf3 0, #fff 5.1em),
-  //-webkit-linear-gradient(#d9eaf3 1px, transparent 0);
-  //background-image: -moz-linear-gradient(0deg, transparent 5em, #d9eaf3 0, #fff 5.1em),
-  //-moz-linear-gradient(#d9eaf3 1px, transparent 0);
-  //background-image: -o-linear-gradient(0deg, transparent 5em, #d9eaf3 0, #fff 5.1em),
-  //-o-linear-gradient(#d9eaf3 1px, transparent 0);
-  //background-image: -ms-linear-gradient(0deg, transparent 5em, #d9eaf3 0, #fff 5.1em),
-  //-ms-linear-gradient(#d9eaf3 1px, transparent 0);
-  //-webkit-background-size: 100% 2em;
-  //-moz-background-size: 100% 2em;
-  //
-  ///* In a perfect world... */
-  //background-image: linear-gradient(0deg, transparent 5em, #d9eaf3 0, #fff 5.1em),
-  //linear-gradient(#d9eaf3 1px, #fff 0);
-  //background-size: 100% 2em;
 }

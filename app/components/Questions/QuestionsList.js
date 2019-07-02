@@ -1,15 +1,13 @@
 import React from 'react';
-
+import './style.scss';
 import List from 'components/List';
 
 class QuestionsList extends React.PureComponent {
 
   render() {
-    const { questions, viewOnly, onAnswerClick, onSelectQuestion } = this.props;
+    const {questions, onAnswerChange} = this.props;
     return (
-      <List items={questions} viewOnly={viewOnly}
-            onAnswerClick={onAnswerClick} onSelectQuestion={onSelectQuestion}
-      />
+      <List items={questions} onAnswerChange={onAnswerChange}/>
     );
   }
 }

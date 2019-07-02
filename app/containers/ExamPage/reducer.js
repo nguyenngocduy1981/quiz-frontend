@@ -1,30 +1,30 @@
-import { LOAD_REPOS_SUCCESS, LOAD_REPOS, LOAD_REPOS_ERROR, ANSWER } from './actions';
-import { saveQuestions } from '../../utils/local-storage';
+import {LOAD_EXAM_SUCCESS, LOAD_EXAM, LOAD_REPOS_ERROR, ANSWER} from './actions';
+import {saveExam} from '../../utils/local-storage';
 
 // The initial state of the App
 export const initialState = {
   loading: false,
   error: false,
-  questions: false,
+  exam: false,
 };
 
-function appReducer(state = initialState, action) {
+function examReducer(state = initialState, action) {
   switch (action.type) {
-    case LOAD_REPOS: {
+    case LOAD_EXAM: {
       const newState = {
         ...state,
         loading: true,
         error: false,
-        questions: false,
+        exam: false,
       };
 
       return newState;
     }
-    case LOAD_REPOS_SUCCESS: {
+    case LOAD_EXAM_SUCCESS: {
       const newState = {
         ...state,
         loading: false,
-        questions: action.questions,
+        exam: action.exam,
       };
       return newState;
     }
@@ -38,24 +38,28 @@ function appReducer(state = initialState, action) {
       };
     }
     case ANSWER: {
-      const { posAnsId, quesId } = action.payload;
-      const questions = state.questions.map(q => {
+      const {val, quesId, section} = action.payload;
 
-        if (q.id === quesId && q.posibleAnswers) {
-          q.posibleAnswers
-            .map(p => {
-              p.selected = p.id === posAnsId;
-              return p;
-            });
-        }
-        return q;
-      });
-      saveQuestions(questions);
+      const exam = Object.assign({}, state.exam)
+
+      exam[section] = exam[section]
+        .map(q => {
+          if (q.id === quesId) {
+            q.answered = val;
+            // if (input.type === ANSWER_TYPE.SELECT) {
+            //   q.possibleAnswers.forEach(p => p.selected = p.id === input.val);
+            // } else if (input.type === ANSWER_TYPE.INPUT) {
+            //   q.answered = {text: input.val};
+            // }
+          }
+          return q;
+        });
+      saveExam(exam);
       return {
         ...state,
         error: action.error,
         loading: false,
-        questions,
+        exam,
       };
     }
 
@@ -64,4 +68,4 @@ function appReducer(state = initialState, action) {
   }
 }
 
-export default appReducer;
+export default examReducer;
