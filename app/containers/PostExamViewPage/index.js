@@ -9,15 +9,15 @@ import {
   makeSelectLoading,
   makeSelectError,
 } from './selectors';
-import {answer, goHome, lamLaiBai, loadExam, nopBai} from './actions';
+import {goHome, loadExamResult} from './actions';
 import saga from './saga';
 
 import './style.scss';
 import {Helmet} from 'react-helmet';
 import Error from "components/Error";
 import {
-  ABC_LIST,
   OPTION_FROM_GIVEN,
+  PASSAGE,
   PASSAGE_OPTION_FROM_GIVEN,
   PASSAGE_TYPES,
   QUESTION_OPTION_TYPES
@@ -25,7 +25,7 @@ import {
 
 const _ = require('lodash');
 
-class ExamPage extends React.Component {
+class PostExamViewPage extends React.Component {
   // collapse: {"sec_"+value: true/false}
   constructor(props) {
     super(props);
@@ -39,28 +39,7 @@ class ExamPage extends React.Component {
   }
 
   componentDidMount() {
-    const {name} = this.props.match.params;
-    this.setState({currentExam: name}, () => {
-      this.props.loadExam(name);
-    });
-  }
-
-  onPassageInputChange = (ques, idx) => evt => {
-    ques.passages[idx].answered = evt.target.value;
-    this.props.answer(ques);
-  }
-
-  saveAnswer = (section, ques, val) => {
-    ques.answered = val;
-    this.props.answer({ques, sectionId: section.id});
-  }
-
-  onTextboxInputChange = (section, ques) => evt => {
-    this.saveAnswer(section, ques, evt.target.value);
-  }
-
-  onPosAnswerChange = (section, ques, val) => evt => {
-    this.saveAnswer(section, ques, val);
+    this.props.loadExamResult();
   }
 
   renderSections = () => {
@@ -119,60 +98,61 @@ class ExamPage extends React.Component {
   }
 
   renderSectionOptions = (sec) => {
-    const {type, options} = sec;
-    if (type !== OPTION_FROM_GIVEN) return '';
-
+    const {options} = sec;
     return (<div className={'options'}>{options.map(this.renderOption)}</div>);
   }
 
-  renderAnswer(section, ques) {
-    if (QUESTION_OPTION_TYPES.includes(section.questionType)) {
-      return this.renderPossibleAnswer(section, ques);
-    }
-
-    return this.renderTextBoxAnswer(section, ques);
+  renderTextAnswer(ques) {
+    return <h5 className={ques.answered === ques.answer ? 'correct' : 'incorrect'} title={this.getAns(ques)}>
+      {ques.answered}
+    </h5>
   }
 
-  renderTextBoxAnswer(section, ques) {
-    return (
-      <span className={'pos_an'}>
-        <input type='text' className={'text-control'}
-               value={ques.answered}
-               onChange={this.onTextboxInputChange(section, ques)}/>
-      </span>
-    );
+  getAns = (ques) => {
+    if (!ques.answer) return 'Không tim thấy';
+
+    return `Đáp án đúng: ${ques.answer}`;
   }
 
-  renderPossibleAnswer(section, ques) {
+  renderPossibleAnswer(ques) {
+    if (!ques.possibleAnswers) return null;
+
     const {possibleAnswers} = ques;
-    if (!possibleAnswers) {
-      return null;
-    }
-
     return possibleAnswers.map((p, idx) =>
-      <span onClick={this.onPosAnswerChange(section, ques, p)}
-            key={`post_${idx}`}
-            className={`pos_an ${ques.answered === p ? 'selected' : ''}`}
-            dangerouslySetInnerHTML={{__html: this.renderHtml(p, idx)}}
+      <span key={`post_${idx}`}
+            className={`pos_an ${ques.answered === ques.answer === p ? 'selected' : ''}`}
+            dangerouslySetInnerHTML={{__html: p}}
       />,
     );
   }
 
-  renderHtml = (text, idx) => {
-    return ABC_LIST[idx] + text
-      .replace('#START#', '<span style="text-decoration: underline;">')
-      .replace('#END#', '</span>');
-  };
+  renderAnswer(section, ques) {
+    const correct = ques.answered === ques.answer;
 
-  renderQuestion = (section, ques, idx) => {
+    if (QUESTION_OPTION_TYPES.includes(section.questionType)) {
+      return (
+        <div className={'possible-ans'}>
+          <span className={'pos-view'}>{this.renderPossibleAnswer(ques)}</span>
+          <h5 className={correct ? 'correct' : 'incorrect'} title={this.getAns(ques)}>
+            {ques.answered}
+          </h5>
+        </div>
+      );
+    }
+    return this.renderTextAnswer(ques);
+  }
+
+
+  renderQuestion = (section, q, idx) => {
     return (
-      <div className="list-item-wrapper" key={idx}>
-        <h3 className={'question-name-view-only'}>Question {idx + 1} - {ques.text}</h3>
-        <div className={'posible_answer'}>
-          {this.renderAnswer(section, ques)}
+      <div key={idx}>
+        <div className="list-item-wrapper">
+          <h3 className={'question-name-view-only'}>Question {idx + 1} - {q.text}</h3>
+          {this.renderAnswer(section, q)}
         </div>
       </div>
-    );
+
+    )
   }
 
   renderPASSAGE_OPTION_FROM_GIVEN = (options) => {
@@ -191,14 +171,15 @@ class ExamPage extends React.Component {
       </section>
     )
   }
-  renderQuestions = (examItem, idx) => {
+
+  renderQuestions = (examItem) => {
     const {section, passage, questions} = examItem;
     const type = section.questionType;
     const secId = section.id;
     return (
-      <section key={`sec_${idx}`} className={'section'}>
+      <section key={`sec_${secId}`} className={'section'}>
         <section className={'section-header'}>
-          <h3>{section.text}</h3>
+          <h3>{section.text} - {type}</h3>
           <h3 onClick={this.collapseToggle(secId)}>
             {this.renderAnsweredQuestionInSection(questions)}
             &nbsp;&nbsp;
@@ -224,10 +205,6 @@ class ExamPage extends React.Component {
         <div>
           <span className={'btn'} onClick={this.props.goHome}>Về trang danh sách bài thi</span>
         </div>
-        <div>
-          <span className={'btn'} onClick={e => this.props.nopBai(this.state.currentExam)}>Nộp bài</span>
-          <span className={'btn'} onClick={this.props.lamLaiBai}>Làm lại</span>
-        </div>
         <div>{this.renderAnsweredQuestion()}</div>
       </div>
     );
@@ -240,7 +217,7 @@ class ExamPage extends React.Component {
           <title>ExamPage</title>
           <meta name="description" content="yyyyy"/>
         </Helmet>
-        <div className="exam-page">
+        <div className="exam-result-page">
           {this.renderSummary()}
           {this.renderSections()}
         </div>
@@ -251,10 +228,7 @@ class ExamPage extends React.Component {
 
 
 const mapDispatchToProps = (dispatch) => ({
-  loadExam: (payload) => dispatch(loadExam(payload)),
-  answer: (payload) => dispatch(answer(payload)),
-  nopBai: (payload) => dispatch(nopBai(payload)),
-  lamLaiBai: () => dispatch(lamLaiBai()),
+  loadExamResult: () => dispatch(loadExamResult()),
   goHome: () => dispatch(goHome()),
 });
 
@@ -267,11 +241,11 @@ const mapStateToProps = createStructuredSelector({
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 const withSaga = injectSaga({
-  key: 'exam-page',
+  key: 'exam-result-page',
   saga,
 });
 
 export default compose(
   withSaga,
   withConnect,
-)(ExamPage);
+)(PostExamViewPage);

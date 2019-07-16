@@ -41,16 +41,24 @@ export function* nopBai(payload) {
 
 export function* lamLaiBaiThi() {
   const exam = getExam();
-  const newExam = _.keys(exam)
-    .map(k => {
-      const questions = exam[k];
-      return questions.map(q => {
-        q.answered = '';
-        return q;
-      });
+
+  const keys = _.keys(exam);
+  for (let k of keys) {
+    exam[k] = exam[k].map(q => {
+      q.answered = '';
+      const {passages} = q;
+      if (passages) {
+        q.passages = passages.map(p => {
+          p.answered = '';
+          return p;
+        });
+      }
+      return q;
     });
-  yield put(examLoaded(newExam));
-  saveExam(newExam);
+  }
+
+  yield put(examLoaded(exam));
+  saveExam(exam);
 }
 
 export function* fetchExam(payload) {

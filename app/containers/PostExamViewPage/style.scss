@@ -1,4 +1,4 @@
-.exam-page {
+.exam-result-page {
   .summary {
     display: flex;
     justify-content: space-between;
@@ -64,57 +64,51 @@
     }
   }
 
+  .posible_answer {
+    border-bottom: 1px solid #d9eaf3;
 
-  .list-item-wrapper {
-    width: 100%;
-    //border-top: 1px solid #eee;
-    //border-top: 1px solid grey;
-    padding-bottom: 10px;
-
-    &:first-child {
-      border-top: none;
+    .pos_an {
+      border: 1px solid transparent;
+      padding: 0 15px;
+      margin: 5px;
     }
 
-    h3 {
-      //background: #cccccc;
-      margin: 0 0 5px 5px;
+    .pos_an_view_only {
+      border: 1px solid transparent;
+      padding: 0 15px;
+      margin: 5px;
     }
 
-    .posible_answer {
-      border-bottom: 1px solid #d9eaf3;
-      //display: flex;
-      //justify-content: center;
-      .pos_an {
-        border: 1px solid transparent;
-        padding: 0 15px;
-        margin: 5px;
-        cursor: pointer;
-      }
-
-      .pos_an_view_only {
-        border: 1px solid transparent;
-        padding: 0 15px;
-        margin: 5px;
-      }
-
-      .selected {
-        //border: 1px solid grey;
-        //font-weight: bold;
-        border: 1px solid #41ADDD;
-        color: #41ADDD;
-        //text-decoration: underline;
-      }
-    }
-
-    .passage_an {
-      display: flex;
-
-      span {
-        margin-left: 5px;
-      }
+    .selected {
+      border: 1px solid #41ADDD;
+      color: #41ADDD;
     }
   }
 
+  .correct {
+    color: #41ADDD;
+  }
+
+  .incorrect {
+    color: red;
+  }
+
+  .possible-ans {
+    h5 {
+      margin: 0;
+    }
+
+    .pos_an {
+      padding: 0 15px;
+      margin: 5px;
+    }
+
+    .pos-view {
+      border: 1px solid #41ADDD;
+    }
+  }
+  .passage {
+  }
   .op {
     margin-top: 10px;
     margin-bottom: 10px;

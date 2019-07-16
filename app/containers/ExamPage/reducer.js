@@ -1,6 +1,8 @@
 import {LOAD_EXAM_SUCCESS, LOAD_EXAM, LOAD_REPOS_ERROR, ANSWER} from './actions';
 import {saveExam} from '../../utils/local-storage';
 
+const _ = require('lodash');
+
 // The initial state of the App
 export const initialState = {
   loading: false,
@@ -38,23 +40,15 @@ function examReducer(state = initialState, action) {
       };
     }
     case ANSWER: {
-      const {val, quesId, section} = action.payload;
+      const {ques, sectionId} = action.payload;
+      const exam = Object.assign([], state.exam);
 
-      const exam = Object.assign({}, state.exam)
+      const {questions} = exam.filter(e => e.section.id === sectionId)[0];
+      const oldQues = _.find(questions, ['id', ques.id]);
+      oldQues.answered = ques.answered;
 
-      exam[section] = exam[section]
-        .map(q => {
-          if (q.id === quesId) {
-            q.answered = val;
-            // if (input.type === ANSWER_TYPE.SELECT) {
-            //   q.possibleAnswers.forEach(p => p.selected = p.id === input.val);
-            // } else if (input.type === ANSWER_TYPE.INPUT) {
-            //   q.answered = {text: input.val};
-            // }
-          }
-          return q;
-        });
       saveExam(exam);
+
       return {
         ...state,
         error: action.error,

@@ -7,6 +7,7 @@ import { connectRouter } from 'connected-react-router';
 
 import history from 'utils/history';
 import examReducer from 'containers/ExamPage/reducer';
+import examResultReducer from 'containers/PostExamViewPage/reducer';
 import homeReducer from 'containers/HomePage/reducer';
 // import adminReducer from 'containers/AdminPage/reducer';
 
@@ -16,6 +17,7 @@ import homeReducer from 'containers/HomePage/reducer';
 export default function createReducer(injectedReducers = {}) {
   const rootReducer = combineReducers({
     exam: examReducer,
+    examResult: examResultReducer,
     examList: homeReducer,
     router: connectRouter(history),
     ...injectedReducers,

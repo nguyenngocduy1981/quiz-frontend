@@ -13,6 +13,7 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 
 import Error from "components/Error";
 import {getCurrentExamName} from "../../utils/local-storage";
+import {Link} from "react-router-dom";
 // import Header from 'components/Header';
 // import Footer from 'components/Footer';
 
@@ -67,21 +68,18 @@ class HomePage extends React.PureComponent {
           <meta name="description" content="pp"/>
         </Helmet>
         <div className="home-page">
+
+          <section>
+            <Link className="router-link" to="/exam-rs">
+              Ket qua
+            </Link>
+          </section>
           {this.renderPage()}
         </div>
       </article>
     );
   }
 }
-
-
-// HomePage.propTypes = {
-//   loading: PropTypes.bool,
-//   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-//   examList: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-//   loadExamList: PropTypes.func,
-//   takeExam: PropTypes.func,
-// };
 
 const mapDispatchToProps = (dispatch) => ({
   loadExamList: () => dispatch(loadExamList()),
