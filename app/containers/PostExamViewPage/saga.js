@@ -21,7 +21,8 @@ export function* fetchExam() {
     if (exam) {
       yield put(examLoaded(exam));
     } else {
-      notify("No exam result");
+      alert('Không có kết quả bài thi nào');
+      yield put(push('/'));
     }
   } catch (err) {
     yield put(repoLoadingError(err));
