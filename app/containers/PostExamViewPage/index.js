@@ -126,10 +126,19 @@ class PostExamViewPage extends React.Component {
     );
   }
 
+  renderPASSAGE_OPTION_FROM_GIVENText = (ques) => {
+    return (
+      <span className={ques.answered === ques.answer ? 'correct' : 'incorrect'} title={this.getAns(ques)}>
+        {ques.answered}
+      </span>
+    )
+  }
+
   renderAnswer(section, ques) {
     const correct = ques.answered === ques.answer;
+    const type = section.questionType;
 
-    if (QUESTION_OPTION_TYPES.includes(section.questionType)) {
+    if (QUESTION_OPTION_TYPES.includes(type)) {
       return (
         <div className={'possible-ans'}>
           <span className={'pos-view'}>{this.renderPossibleAnswer(ques)}</span>
@@ -144,11 +153,16 @@ class PostExamViewPage extends React.Component {
 
 
   renderQuestion = (section, q, idx) => {
+    const type = section.questionType;
+    const isPassOpFromGiven = type === PASSAGE_OPTION_FROM_GIVEN;
     return (
       <div key={idx}>
         <div className="list-item-wrapper">
-          <h3 className={'question-name-view-only'}>Question {idx + 1} - {q.text}</h3>
-          {this.renderAnswer(section, q)}
+          {isPassOpFromGiven && <span className={'question-name-view-only'}>{q.text})&nbsp;</span>}
+          {isPassOpFromGiven && this.renderPASSAGE_OPTION_FROM_GIVENText(q)}
+
+          {!isPassOpFromGiven && <h3 className={'question-name-view-only'}>Question {idx + 1} - {q.text}</h3>}
+          {!isPassOpFromGiven && this.renderAnswer(section, q)}
         </div>
       </div>
 
@@ -214,7 +228,7 @@ class PostExamViewPage extends React.Component {
     return (
       <article>
         <Helmet>
-          <title>ExamPage</title>
+          <title>PostExamViewPage</title>
           <meta name="description" content="yyyyy"/>
         </Helmet>
         <div className="exam-result-page">

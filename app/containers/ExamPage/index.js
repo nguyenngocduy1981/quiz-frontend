@@ -17,13 +17,15 @@ import {Helmet} from 'react-helmet';
 import Error from "components/Error";
 import {
   ABC_LIST,
-  OPTION_FROM_GIVEN,
+  OPTION_FROM_GIVEN, PASSAGE_OPTION,
   PASSAGE_OPTION_FROM_GIVEN,
   PASSAGE_TYPES,
   QUESTION_OPTION_TYPES
 } from "../../constants/constants";
 
 const _ = require('lodash');
+
+const OPTIONS_FROM = [PASSAGE_OPTION_FROM_GIVEN, PASSAGE_OPTION];
 
 class ExamPage extends React.Component {
   // collapse: {"sec_"+value: true/false}
@@ -164,6 +166,16 @@ class ExamPage extends React.Component {
       .replace('#END#', '</span>');
   };
 
+  renderQuestionOptionFromGiven = (section, ques, idx) => {
+    return (
+      <div className="list-item-wrapper" key={idx}>
+        <div className={'posible_answer'}>
+          {ques.text}: &nbsp; {this.renderAnswer(section, ques)}
+        </div>
+      </div>
+    );
+  }
+
   renderQuestion = (section, ques, idx) => {
     return (
       <div className="list-item-wrapper" key={idx}>
@@ -194,6 +206,7 @@ class ExamPage extends React.Component {
   renderQuestions = (examItem, idx) => {
     const {section, passage, questions} = examItem;
     const type = section.questionType;
+    const isFromGiven = OPTIONS_FROM.includes(type);
     const secId = section.id;
     return (
       <section key={`sec_${idx}`} className={'section'}>
@@ -210,7 +223,8 @@ class ExamPage extends React.Component {
         {
           this.checkCollapse(secId) || (
             <div className={'section_options'}>
-              {questions.map((q, idx) => this.renderQuestion(section, q, idx))}
+              {!isFromGiven && questions.map((q, idx) => this.renderQuestion(section, q, idx))}
+              {isFromGiven && questions.map((q, idx) => this.renderQuestionOptionFromGiven(section, q, idx))}
             </div>
           )
         }
